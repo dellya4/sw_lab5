@@ -27,16 +27,20 @@
             color: #fff !important;
         }
 
-        .form-control {
+        .form-control, .form-select {
             background-color: #2a2a2a;
             color: #fff;
             border: 1px solid #444;
         }
 
-        .form-select {
+        .form-check-input {
             background-color: #2a2a2a;
-            color: #fff;
-            border: 1px solid #444;
+            border: 1px solid #555;
+        }
+
+        .form-check-input:checked {
+            background-color: #5cb85c;
+            border-color: #5cb85c;
         }
 
         .btn-secondary {
@@ -46,6 +50,15 @@
 
         .btn-secondary:hover {
             background-color: #555;
+        }
+
+        .btn-success {
+            background-color: #5cb85c;
+            border: none;
+        }
+
+        .btn-success:hover {
+            background-color: #4cae4c;
         }
 
         .form-wrapper {
@@ -62,7 +75,7 @@
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
             border: 1px solid #444;
             width: 100%;
-            max-width: 420px;
+            max-width: 480px;
         }
 
         a, a:hover {
@@ -80,41 +93,42 @@
 
         <ul class="nav">
             <li><a href="/" class="nav-link px-3 fs-6">Home</a></li>
-            <li><a href="/unprocessed" class="nav-link px-3 fs-6">New application</a></li>
-            <li><a href="/processed" class="nav-link px-3 fs-6">Processed application</a></li>
-            <li><a href="/addrequest" class="nav-link px-3 fs-6 text-light fw-bold"> + Add application</a></li>
+            <li><a href="/unprocessed" class="nav-link px-3 fs-6">New applications</a></li>
+            <li><a href="/processed" class="nav-link px-3 fs-6">Processed applications</a></li>
+            <li><a href="/addrequest" class="nav-link px-3 fs-6 text-light fw-bold">+ Add application</a></li>
         </ul>
     </div>
 </header>
+
 <div class="form-wrapper">
     <div class="form-container">
-        <h3 class="text-center mb-4">Add new application</h3>
+        <h3 class="text-center mb-4">Assign Operators</h3>
 
-        <form method="post" action="/addrequest">
+        <form th:action="@{/addoperators}" method="post">
+            <input type="hidden" name="requestId" th:value="${request.id}"/>
+
             <div class="mb-3">
-                <label class="form-label">Client name </label>
-                <input type="text" class="form-control" name="userName" required>
+                <p><strong>Client name:</strong> <span th:text="${request.userName}"></span></p>
+                <p><strong>Course:</strong> <span th:text="${request.course.name}"></span></p>
+                <p><strong>Phone:</strong> <span th:text="${request.phone}"></span></p>
             </div>
+
             <div class="mb-3">
-                <label class="form-label">Course</label>
-                    <select class="form-select" name="courseId" required>
-                        <option value="" disabled selected>Select a course</option>
-                        <option th:each="c : ${courses}"
-                                th:value="${c.id}"
-                                th:text="${c.name + ' (' + c.price + ' ₸)'}">
-                        </option>
-                    </select>
+                <label class="form-label">Select operators:</label>
+                <div th:each="operator : ${operators}" class="form-check">
+                    <input class="form-check-input" type="checkbox" name="operatorIds"
+                           th:value="${operator.id}" th:id="${'op' + operator.id}">
+                    <label class="form-check-label" th:for="${'op' + operator.id}">
+                        <span th:text="${operator.name + ' ' + operator.surname + ' (' + operator.department + ')'}"></span>
+                    </label>
+                </div>
             </div>
-            <div class="mb-3">
-                <label class="form-label">Phone </label>
-                <input type="text" class="form-control" name="phone" required>
+
+            <div class="mt-3 text-center d-flex flex-column align-items-center">
+                <button type="submit" class="btn btn-secondary w-75 mb-2">Save</button>
+                <a href="/" class="btn btn-secondary w-75">Cancel</a>
             </div>
-            <button type="submit" class="btn btn-secondary w-100 mt-2">Save</button>
         </form>
-
-        <div class="mt-3 text-center">
-            <a href="/">Back</a>
-        </div>
     </div>
 </div>
 

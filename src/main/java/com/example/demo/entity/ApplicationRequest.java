@@ -1,9 +1,12 @@
-package com.example.demo;
+package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+
+import java.util.List;
 
 @Entity
 @Table(name = "ApplicationRequest")
@@ -20,13 +23,16 @@ public class ApplicationRequest {
     @Column(name = "userName", length = 200)
     private String userName;
 
-    @Column(name = "courseName", length = 200)
-    String courseName;
-
     @Column(name = "phone", length = 200)
-    String phone;
+    private String phone;
 
     @Column(name = "handled")
-    boolean handled;
+    private boolean handled;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Courses course;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    private List<Operators> operators;
 
 }

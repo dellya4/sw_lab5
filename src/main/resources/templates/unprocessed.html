@@ -73,7 +73,8 @@
                 <div class="col-md-6 mb-3" th:each="req : ${requests}">
                     <div class="card p-3">
                         <h5 class="text-light" th:text="${req.userName}"></h5>
-                        <p class="text-light" th:text="'Course: ' + ${req.courseName}"></p>
+                        <p class="text-light" th:text="'Course: ' + ${req.course.name}" ></p>
+                        <p class="text-light" th:text="'Course price: ' + ${req.course.price} + '₸' " ></p>
                         <p class="text-light" th:text="'Phone: ' + ${req.phone}"></p>
                         <p class="text-danger fw-bold"> Unprocessed</p>
                         <a th:href="@{/details(requestId=${req.id})}" class="btn btn-outline-light btn-sm text-light">Details</a>
